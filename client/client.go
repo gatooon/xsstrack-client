@@ -5,6 +5,8 @@ import (
 	"fmt"
 	"net"
 	"os"
+	"strconv"
+	"time"
 )
 
 func RunClient() {
@@ -19,13 +21,8 @@ func RunClient() {
 	}
 
 	fmt.Println("Connected !")
-	fmt.Println("Enter Url to listen on: ")
-	scanner = bufio.NewScanner(os.Stdin)
-	scanner.Scan()
 
-	connection.Write([]byte(scanner.Text()))
-
-	fmt.Println("Server Listening for " + scanner.Text())
+	fmt.Println("Server Listening")
 
 	defer connection.Close()
 	for {
@@ -35,7 +32,10 @@ func RunClient() {
 			fmt.Println("Error reading:", err.Error())
 			os.Exit(1)
 		}
+		currentTime := time.Now()
+		formatedTime := strconv.Itoa(currentTime.Hour()) + ":" + strconv.Itoa(currentTime.Minute()) + ":" + strconv.Itoa(currentTime.Second())
 		fmt.Println("----------------------------------------------------------------------------")
+		fmt.Println("Time : " + formatedTime)
 		fmt.Println("Received: ", string(buffer[:mLen]))
 		fmt.Println("----------------------------------------------------------------------------")
 	}
